@@ -205,7 +205,7 @@ function App() {
           onAddPlace={handleAddPlaceSubmit}
         />
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-        <InfoTooltipPopup message={infoMessage} onClose={closeAllPopups} />
+        <InfoTooltipPopup info={infoMessage} onClose={closeAllPopups} />
       </div>
     </CurrentUserContext.Provider>
   );

@@ -1,11 +1,11 @@
-function InfoTooltipPopup({ message, onClose }) {
+function InfoTooltipPopup({ info, onClose }) {
     function handleOverlayClick(event) {
       if (event.target === event.currentTarget) onClose(event);
     }
   
     return (
       <div
-        className={`popup popup_info ` + (message ? " popup_open" : "")}
+        className={`popup popup_info ` + (info ? " popup_open" : "")}
         onClick={handleOverlayClick}
       >
         <button
@@ -18,14 +18,14 @@ function InfoTooltipPopup({ message, onClose }) {
           <p
             className={
               "popup__info-message" +
-              (message
-                ? message.isSuccess
+              (info
+                ? info.isSuccess
                   ? " popup__info-message_success"
                   : " popup__info-message_fail"
                 : "")
             }
           >
-            {message ? message.text : " "}
+            {info ? info.text : " "}
           </p>
         </div>
       </div>
