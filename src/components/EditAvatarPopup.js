@@ -1,18 +1,20 @@
-import { useRef,  useEffect } from "react";
+import { useEffect } from "react";
 import PopupWithForm from "./PopupWithForm";
+import useForm from "../hooks/useForm";
 
 function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
-  const avatarRef = useRef();
+
+  const {values, handleChange, setValues} = useForm();
 
   useEffect(() => {
-    avatarRef.current.value = "";
+    setValues("");
   }, [isOpen]);
 
   function handleSubmit(e) {
     e.preventDefault();
 
     onUpdateAvatar({
-      avatar: avatarRef.current.value,
+      avatar: values.avatar,
     });
   }
 
@@ -33,7 +35,8 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
           required
           id="link-avatar"
           name="avatar"
-          ref={avatarRef}
+          onChange={handleChange}
+          value={values.avatar || ''}
         />
         <span className="popup-form__input-error link-avatar-error"></span>
       </fieldset>

@@ -1,31 +1,21 @@
-import { useState,  useEffect } from "react";
+import { useEffect } from "react";
+import useForm from "../hooks/useForm";
 import PopupWithForm from "./PopupWithForm";
 
 function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
-  const [name, setName] = useState("");
-  const [link, setLink] = useState("");
+
+  const {values, handleChange, setValues} = useForm();
 
   useEffect(() => {
-    setName("");
-    setLink("");
+    setValues('');
   }, [isOpen]);
-
-  function handleChangeName(event) {
-    const text = event.target.value;
-    setName(text);
-  }
-
-  function handleChangeLink(event) {
-    const text = event.target.value;
-    setLink(text);
-  }
 
   function handleSubmit(e) {
     e.preventDefault();
 
     onAddPlace({
-      name,
-      link,
+      name:values.place,
+      link:values.placeLink,
     });
   }
 
@@ -48,8 +38,8 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
           maxLength="30"
           id="place-input"
           name="place"
-          onChange={handleChangeName}
-          value={name}
+          onChange={handleChange}
+          value={values.place || ''}
         />
         <span className="popup-form__input-error place-input-error"></span>
       </fieldset>
@@ -61,8 +51,8 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
           required
           id="link-input"
           name="placeLink"
-          onChange={handleChangeLink}
-          value={link}
+          onChange={handleChange}
+          value={values.placeLink || ''}
         />
         <span className="popup-form__input-error link-input-error"></span>
       </fieldset>
