@@ -11,37 +11,39 @@ class Auth {
         );
   }
 
+
+  _request(endpoint, options) {
+    return fetch(this._baseUrl + endpoint, options).then(this._checkResponse);
+  }
+
   register({ email, password }) {
-    const url = `${this._baseUrl}/signup`;
-    return fetch(url, {
+    return this._request(`/signup`,{
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
-    }).then((res) => this._checkResponse(res));
+    })
   }
 
   authorize({ email, password }) {
-    const url = `${this._baseUrl}/signin`;
-    return fetch(url, {
+    return this._request(`/signin`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
-    }).then((res) => this._checkResponse(res));
+    })
   }
 
   checkToken(token) {
-    const url = `${this._baseUrl}/users/me`;
-    return fetch(url, {
+    return  this._request(`/users/me`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-    }).then((res) => this._checkResponse(res));
+    })
   }
 }
 
