@@ -1,100 +1,83 @@
 class Api {
-  constructor({baseUrl, headers}){
+  constructor({ baseUrl, headers }) {
     this._headers = headers;
     this._baseUrl = baseUrl;
   }
 
-
   _checkResponse(res) {
-    if (res.ok){
-      return res.json()
+    if (res.ok) {
+      return res.json();
     }
-    return Promise.reject(`Error: ${res.status}`)
+    return Promise.reject(`Error: ${res.status}`);
+  }
+
+  _request(endpoint, options) {
+    return fetch(this._baseUrl + endpoint, options).then(this._checkResponse);
   }
 
   getInitialCards() {
-    return fetch(`${this._baseUrl}/cards`, {
-    headers: this._headers
-    })
-      .then(res => this._checkResponse(res));
+    return this._request(`/cards`, {
+      headers: this._headers,
+    });
   }
 
-  addCard({name, link}) {
-    return fetch(`${this._baseUrl}/cards`,{
-      method: 'POST',
-      headers:this._headers,
+  addCard({ name, link }) {
+    return this._request(`/cards`, {
+      method: "POST",
+      headers: this._headers,
       body: JSON.stringify({
         name,
-        link
-      })
-    })
-    .then (res => this._checkResponse(res))
+        link,
+      }),
+    });
   }
 
   like(cardId, isLiked) {
-    return fetch(`${this._baseUrl}/cards/${cardId}/likes`,{
-    method: `${!isLiked ? 'DELETE' : 'PUT'}`,
-    headers: this._headers}
-    )
-    .then(res => this._checkResponse(res))
+    return this._request(`/cards/${cardId}/likes`, {
+      method: `${!isLiked ? "DELETE" : "PUT"}`,
+      headers: this._headers,
+    });
   }
-
 
   deleteCard(cardId) {
-    return fetch(`${this._baseUrl}/cards/${cardId}`, {
+    return this._request(`/cards/${cardId}`, {
       headers: this._headers,
-      method: 'DELETE'
-    })
-    .then(res => this._checkResponse(res))
+      method: "DELETE",
+    });
   }
 
-  getProfile(){
-    return fetch(`${this._baseUrl}/users/me`, {
-      headers: this._headers
-    })
-      .then(res => this._checkResponse(res));
+  getProfile() {
+    return this._request(`/users/me`, {
+      headers: this._headers,
+    });
   }
 
-  editProfile({name, about}) {
-    return fetch(`${this._baseUrl}/users/me`,{
-      method: 'PATCH',
+  editProfile({ name, about }) {
+    return this._request(`/users/me`, {
+      method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
         name,
         about,
-      })
-    })
-    .then(res => this._checkResponse(res))
+      }),
+    });
   }
 
   changeAvatar(data) {
-    return fetch(`${this._baseUrl}/users/me/avatar`,{
-      method: 'PATCH',
+    return this._request(`/users/me/avatar`, {
+      method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
-        avatar: data.avatar
-      })
-    })
-    .then(res => this._checkResponse(res))
+        avatar: data.avatar,
+      }),
+    });
   }
 }
 
 export const api = new Api({
-  baseUrl:'https://mesto.nomoreparties.co/v1/cohort-54',
+  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-54",
   headers: {
-    authorization: '6834ec0b-ea76-4e97-a1ec-80a039bf651a',
-    'Content-Type': 'application/json'
-  }
-})
-
-
-
-
-
-
-
-
-
-
-
-
+    authorization: "6834ec0b-ea76-4e97-a1ec-80a039bf651a",
+    "Content-Type": "application/json",
+  },
+});
