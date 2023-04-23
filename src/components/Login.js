@@ -1,6 +1,5 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import Header from "./Header";
 import auth from "../utils/Auth";
 
 function Login({ ShowInfoTooltip, onLogin }) {
