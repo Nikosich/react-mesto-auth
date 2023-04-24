@@ -4,7 +4,6 @@ import "../index.css";
 import { api } from "../utils/Api";
 import Main from "./Main";
 import Header from "./Header";
-import Footer from "./Footer";
 import ImagePopup from "./ImagePopup";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
@@ -245,7 +244,6 @@ function App() {
             }
           />
         </Routes>
-        <Footer />
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
