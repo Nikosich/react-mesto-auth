@@ -4,15 +4,12 @@ import CurrentUserContext from "../contexts/CurrentUserContext";
 import useForm from "../hooks/useForm";
 
 function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
-
   const currentUser = useContext(CurrentUserContext);
 
+  const { values, handleChange, setValues } = useForm();
 
-  const {values, handleChange, setValues} = useForm();
-
-  
   useEffect(() => {
-    setValues({ 'name': currentUser.name, 'job': currentUser.about })
+    setValues({ name: currentUser.name, job: currentUser.about });
   }, [currentUser, isOpen]);
 
   function handleSubmit(e) {
@@ -44,7 +41,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
           id="name-input"
           name="name"
           onChange={handleChange}
-          value={values.name || ''}
+          value={values.name || ""}
         />
         <span className="popup-form__input-error name-input-error"></span>
       </fieldset>
@@ -59,7 +56,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
           id="about-input"
           name="job"
           onChange={handleChange}
-          value={values.job || ''}
+          value={values.job || ""}
         />
         <span className="popup-form__input-error about-input-error"></span>
       </fieldset>

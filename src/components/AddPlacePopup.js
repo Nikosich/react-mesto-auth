@@ -3,19 +3,18 @@ import useForm from "../hooks/useForm";
 import PopupWithForm from "./PopupWithForm";
 
 function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
-
-  const {values, handleChange, setValues} = useForm();
+  const { values, handleChange, setValues } = useForm();
 
   useEffect(() => {
-    setValues('');
+    setValues({});
   }, [isOpen]);
 
   function handleSubmit(e) {
     e.preventDefault();
 
     onAddPlace({
-      name:values.place,
-      link:values.placeLink,
+      name: values.place,
+      link: values.placeLink,
     });
   }
 
@@ -39,7 +38,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
           id="place-input"
           name="place"
           onChange={handleChange}
-          value={values.place || ''}
+          value={values.place || ""}
         />
         <span className="popup-form__input-error place-input-error"></span>
       </fieldset>
@@ -52,7 +51,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
           id="link-input"
           name="placeLink"
           onChange={handleChange}
-          value={values.placeLink || ''}
+          value={values.placeLink || ""}
         />
         <span className="popup-form__input-error link-input-error"></span>
       </fieldset>

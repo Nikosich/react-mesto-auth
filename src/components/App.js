@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import "../index.css";
 import { api } from "../utils/Api";
 import Main from "./Main";
@@ -126,11 +126,31 @@ function App() {
     setInfoMessage(null);
   };
 
+  const isOpen =
+    isEditAvatarPopupOpen ||
+    isEditProfilePopupOpen ||
+    isAddPlacePopupOpen ||
+    selectedCard.link;
+
+  useEffect(() => {
+    function closeByEscape(evt) {
+      if (evt.key === "Escape") {
+        closeAllPopups();
+      }
+    }
+    if (isOpen) {
+      document.addEventListener("keydown", closeByEscape);
+      return () => {
+        document.removeEventListener("keydown", closeByEscape);
+      };
+    }
+  }, [isOpen]);
+
   function handleShowInfoMessage(message) {
     setInfoMessage(message);
   }
 
-  useEffect(() => {
+  function handleCheckToken() {
     const token = localStorage.getItem("token");
     if (token) {
       auth
@@ -142,10 +162,52 @@ function App() {
         })
         .catch(console.error);
     }
-  }, [navigate]);
+  }
 
-  function handleLogin() {
-    setIsLoggedIn(true);
+  useEffect(() => {
+    handleCheckToken();
+  }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/");
+    }
+  }, [isLoggedIn]);
+
+  function handleRegistration(data) {
+    return auth
+      .register(data)
+      .then((data) => {
+        handleShowInfoMessage({
+          text: "Вы успешно зарегистрировались!",
+          isSuccess: true,
+        });
+        navigate("/sign-in");
+      })
+      .catch((err) => {
+        handleShowInfoMessage({
+          text: "Что-то пошло не так! Попробуйте еще раз.",
+          isSuccess: false,
+        });
+      });
+  }
+
+  function handleAuthorization(data) {
+    return auth
+      .authorize(data)
+      .then((data) => {
+        setIsLoggedIn(true);
+        localStorage.setItem("token", data.token);
+        handleCheckToken();
+        navigate("/");
+      })
+      .catch((err) => {
+        const text = err.message || "Что-то пошло не так! Попробуйте еще раз.";
+        handleShowInfoMessage({
+          text: text,
+          isSuccess: false,
+        });
+      });
   }
 
   function handleLogout() {
@@ -160,16 +222,11 @@ function App() {
         <Routes>
           <Route
             path="/sign-up"
-            element={<Register showInfoTooltip={handleShowInfoMessage} />}
+            element={<Register onRegister={handleRegistration} />}
           ></Route>
           <Route
             path="/sign-in"
-            element={
-              <Login
-                showInfoTooltip={handleShowInfoMessage}
-                onLogin={handleLogin}
-              />
-            }
+            element={<Login onLogin={handleAuthorization} />}
           ></Route>
           <Route
             path="/"

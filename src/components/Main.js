@@ -14,7 +14,6 @@ function Main({
   const currentUser = useContext(CurrentUserContext);
 
   return (
-    <>
     <main className="content">
       <section className="profile">
         <div className="profile__container">
@@ -61,7 +60,6 @@ function Main({
         })}
       </ul>
     </main>
-    </>
   );
 }
 
