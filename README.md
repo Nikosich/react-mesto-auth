@@ -36,4 +36,20 @@
   - Функциональные компоненты;
   - Хуки.
 
+## Установка и запуск проекта:
+Клонировать репозиторий:
+
+    git clone https://github.com/Nikosich/react-mesto-auth.git
+
+Установить зависимости:
+
+    npm install
+
+Запустить сервер:
+
+    npm run start
+
+Запустить сервер с hot-reload:
+
+    npm run dev
 
